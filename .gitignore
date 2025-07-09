@@ -1,5 +1,15 @@
-# Logs
-logs
+# 🔧 Node.js dependencies
+node_modules/
+dist-ssr/
+
+
+
+# 📦 Env and local settings
+.env
+*.local
+
+# 📋 Logifailid
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -7,19 +17,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
-
-# Editor directories and files
-.vscode/*
+# 🧠 IDE ja tööriistade failid
+.vscode/
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.env
+
+# 🧪 Test coverage (kui kasutad testimist)
+coverage/
+
+# 📄 Buildi ja deploy skriptide ajutised failid
+*.bak
+*.tmp
