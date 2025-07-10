@@ -141,6 +141,19 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               )}
             </button>
           </form>
+
+          {/* Demo credentials hint */}
+          <div className="mt-6 p-4 bg-blue-600/20 border border-blue-500/30 rounded-xl">
+            <div className="text-blue-300 text-sm">
+              <p className="font-bold text-center mb-3">Demo kasutajad:</p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                </div>
+                <div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
