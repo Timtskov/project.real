@@ -23,7 +23,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Define valid users with their passwords
-    const validUsers = {
+    const validUsers: { [key: string]: string } = {
       'tim': 'tim17',
       'user1': 'pass123',
       'user2': 'secure456',
