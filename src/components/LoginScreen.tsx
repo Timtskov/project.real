@@ -22,7 +22,33 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 1000));
 
-    if (username.toLowerCase() === 'tim' && password === 'tim17') {
+    // Define valid users with their passwords
+    const validUsers = {
+      'tim': 'tim17',
+      'user1': 'pass123',
+      'user2': 'secure456',
+      'user3': 'mypass789',
+      'user4': 'login2024',
+      'user5': 'password1',
+      'user6': 'access999',
+      'user7': 'key2023',
+      'user8': 'secret888',
+      'user9': 'code777',
+      'user10': 'auth666',
+      'user11': 'entry555',
+      'user12': 'token444',
+      'user13': 'verify333',
+      'user14': 'check222',
+      'user15': 'valid111',
+      'user16': 'open000',
+      'user17': 'start999',
+      'user18': 'begin888',
+      'user19': 'enter777',
+      'user20': 'login666'
+    };
+
+    const userKey = username.toLowerCase();
+    if (validUsers[userKey] && password === validUsers[userKey]) {
       playSuccess();
       onLogin(username);
     } else {
@@ -40,8 +66,8 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Õppelatvorm</h1>
-          <p className="text-gray-300">Kõikide Klasside Õppelatvorm</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Eesti Keele Õpe</h1>
+          <p className="text-gray-300">8. Klassi Platvorm</p>
         </div>
 
         {/* Login Form */}
@@ -115,6 +141,40 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               )}
             </button>
           </form>
+
+          {/* Demo credentials hint */}
+          <div className="mt-6 p-4 bg-blue-600/20 border border-blue-500/30 rounded-xl">
+            <div className="text-blue-300 text-sm">
+              <p className="font-bold text-center mb-3">Demo kasutajad:</p>
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <p><strong>tim</strong> → tim17</p>
+                  <p><strong>user1</strong> → pass123</p>
+                  <p><strong>user2</strong> → secure456</p>
+                  <p><strong>user3</strong> → mypass789</p>
+                  <p><strong>user4</strong> → login2024</p>
+                  <p><strong>user5</strong> → password1</p>
+                  <p><strong>user6</strong> → access999</p>
+                  <p><strong>user7</strong> → key2023</p>
+                  <p><strong>user8</strong> → secret888</p>
+                  <p><strong>user9</strong> → code777</p>
+                </div>
+                <div>
+                  <p><strong>user10</strong> → auth666</p>
+                  <p><strong>user11</strong> → entry555</p>
+                  <p><strong>user12</strong> → token444</p>
+                  <p><strong>user13</strong> → verify333</p>
+                  <p><strong>user14</strong> → check222</p>
+                  <p><strong>user15</strong> → valid111</p>
+                  <p><strong>user16</strong> → open000</p>
+                  <p><strong>user17</strong> → start999</p>
+                  <p><strong>user18</strong> → begin888</p>
+                  <p><strong>user19</strong> → enter777</p>
+                  <p><strong>user20</strong> → login666</p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
