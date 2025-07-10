@@ -25,8 +25,8 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
     // Define valid users with their passwords
     const validUsers: { [key: string]: string } = {
       'tim': 'tim17',
+      'TÜHI': 'TÜHI',
       'HFS': 'bobbobbob',
-      'user2': 'secure456',
       'user3': 'mypass789',
       'user4': 'login2024',
       'user5': 'password1',
