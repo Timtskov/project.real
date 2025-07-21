@@ -758,90 +758,274 @@ export function LearnMode() {
                   </div>
                 </div>
 
-                {/* Chapters List */}
-                <div className="grid gap-6">
-                  {currentSubject.chapters.map((chapter, index) => {
-                    const isCompleted = progress?.completedChapters.includes(chapter.id);
-                    const mainHeadings = chapter.mainHeadings || [];
-                    const images = chapter.images || [];
-                    const chapterDefinitions = currentSubject.definitions?.filter(def => def.chapterId === chapter.id) || [];
+                {/* Book Structure with Headings and Chapters */}
+                <div className="space-y-8">
+                  {/* Book Headings with their chapters */}
+                  {(currentSubject.bookHeadings || []).map((heading) => {
+                    const headingChapters = currentSubject.chapters
+                      .filter(chapter => chapter.bookHeadingId === heading.id)
+                      .sort((a, b) => (a.order || 0) - (b.order || 0));
+                    
+                    if (headingChapters.length === 0) return null;
                     
                     return (
-                      <button
-                        key={chapter.id}
-                        onClick={() => handleChapterSelect(chapter.id)}
-                        onMouseEnter={playHover}
-                        className={`group p-6 rounded-2xl transition-all duration-300 transform hover:scale-102 hover:-translate-y-1 ${
-                          state.settings.darkMode 
-                            ? 'bg-gray-800/80 hover:bg-gray-700/80 border border-gray-700' 
-                            : 'bg-white/80 hover:bg-white/90 border border-white/20'
-                        } backdrop-blur-sm shadow-xl hover:shadow-2xl text-left`}
-                      >
-                        <div className="flex items-center justify-between">
+                      <div key={heading.id} className={`rounded-3xl ${
+                        state.settings.darkMode 
+                          ? 'bg-gray-800/80 border border-gray-700' 
+                          : 'bg-white/80 border border-white/20'
+                      } backdrop-blur-sm shadow-xl overflow-hidden`}>
+                        
+                        {/* Book Heading Header */}
+                        <div className={`p-6 ${
+                          state.settings.darkMode ? 'bg-gray-700/50' : 'bg-gray-50/80'
+                        } border-b ${
+                          state.settings.darkMode ? 'border-gray-600' : 'border-gray-200'
+                        }`}>
                           <div className="flex items-center space-x-4">
-                            <div 
-                              className={`w-12 h-12 rounded-full flex items-center justify-center ${
-                                isCompleted 
-                                  ? 'bg-green-500 text-white' 
-                                  : state.settings.darkMode 
-                                    ? 'bg-gray-700 text-gray-300' 
-                                    : 'bg-gray-100 text-gray-600'
-                              }`}
-                            >
-                              {isCompleted ? (
-                                <CheckCircle className="w-6 h-6" />
-                              ) : (
-                                <span className="font-bold">{index + 1}</span>
-                              )}
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                              state.settings.darkMode ? 'bg-blue-600' : 'bg-blue-500'
+                            }`}>
+                              <BookOpen className="w-6 h-6 text-white" />
                             </div>
                             <div>
-                              <h3 className={`text-xl font-semibold ${
+                              <h3 className={`text-2xl font-bold ${
                                 state.settings.darkMode ? 'text-white' : 'text-gray-900'
                               }`}>
-                                {chapter.title}
+                                {heading.title}
                               </h3>
-                              <div className="flex flex-wrap gap-2 mt-1">
-                                <p className={`text-sm ${
-                                  state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
-                                }`}>
-                                  {isCompleted ? t('completed') : t('notStarted')}
-                                </p>
-                                <span className={`px-2 py-1 rounded-full text-xs ${
-                                  state.settings.darkMode ? 'bg-blue-600 text-white' : 'bg-blue-100 text-blue-800'
-                                }`}>
-                                  {t('customContent')}
-                                </span>
-                                {mainHeadings.length > 0 && (
-                                  <span className={`px-2 py-1 rounded-full text-xs ${
-                                    state.settings.darkMode ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-800'
-                                  }`}>
-                                    {mainHeadings.length} peapealkirja
-                                  </span>
-                                )}
-                                {images.length > 0 && (
-                                  <span className={`px-2 py-1 rounded-full text-xs ${
-                                    state.settings.darkMode ? 'bg-green-600 text-white' : 'bg-green-100 text-green-800'
-                                  }`}>
-                                    {images.length} pilti
-                                  </span>
-                                )}
-                                {chapterDefinitions.length > 0 && (
-                                  <span className={`px-2 py-1 rounded-full text-xs ${
-                                    state.settings.darkMode ? 'bg-yellow-600 text-white' : 'bg-yellow-100 text-yellow-800'
-                                  }`}>
-                                    {chapterDefinitions.length} definitsiooni
-                                  </span>
-                                )}
-                              </div>
+                              <p className={`text-sm ${
+                                state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
+                              }`}>
+                                {headingChapters.length} peatükki
+                              </p>
                             </div>
                           </div>
-                          <ArrowRight className={`w-6 h-6 transition-transform group-hover:translate-x-1 ${
-                            state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
-                          }`} />
+                          
+                          {/* Book Heading Content Preview */}
+                          {heading.content && (
+                            <div className={`mt-4 p-4 rounded-xl ${
+                              state.settings.darkMode ? 'bg-gray-800/50' : 'bg-white/50'
+                            }`}>
+                              <p className={`text-sm ${
+                                state.settings.darkMode ? 'text-gray-300' : 'text-gray-700'
+                              }`}>
+                                {heading.content.length > 200 
+                                  ? heading.content.substring(0, 200) + '...' 
+                                  : heading.content}
+                              </p>
+                            </div>
+                          )}
                         </div>
-                      </button>
+
+                        {/* Chapters under this heading */}
+                        <div className="p-6 space-y-4">
+                          {headingChapters.map((chapter, index) => {
+                            const isCompleted = progress?.completedChapters.includes(chapter.id);
+                            const mainHeadings = chapter.mainHeadings || [];
+                            const images = chapter.images || [];
+                            const chapterDefinitions = currentSubject.definitions?.filter(def => def.chapterId === chapter.id) || [];
+                            
+                            return (
+                              <button
+                                key={chapter.id}
+                                onClick={() => handleChapterSelect(chapter.id)}
+                                onMouseEnter={playHover}
+                                className={`group w-full p-4 rounded-xl transition-all duration-300 transform hover:scale-102 hover:-translate-y-1 ${
+                                  state.settings.darkMode 
+                                    ? 'bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600' 
+                                    : 'bg-gray-50/50 hover:bg-gray-100/50 border border-gray-200'
+                                } shadow-lg hover:shadow-xl text-left`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center space-x-4">
+                                    <div 
+                                      className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                        isCompleted 
+                                          ? 'bg-green-500 text-white' 
+                                          : state.settings.darkMode 
+                                            ? 'bg-gray-600 text-gray-300' 
+                                            : 'bg-gray-200 text-gray-600'
+                                      }`}
+                                    >
+                                      {isCompleted ? (
+                                        <CheckCircle className="w-5 h-5" />
+                                      ) : (
+                                        <span className="font-bold text-sm">{index + 1}</span>
+                                      )}
+                                    </div>
+                                    <div>
+                                      <h4 className={`text-lg font-semibold ${
+                                        state.settings.darkMode ? 'text-white' : 'text-gray-900'
+                                      }`}>
+                                        {chapter.title}
+                                      </h4>
+                                      <div className="flex flex-wrap gap-2 mt-1">
+                                        <p className={`text-xs ${
+                                          state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
+                                        }`}>
+                                          {isCompleted ? t('completed') : t('notStarted')}
+                                        </p>
+                                        {mainHeadings.length > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                            state.settings.darkMode ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-800'
+                                          }`}>
+                                            {mainHeadings.length} peapealkirja
+                                          </span>
+                                        )}
+                                        {images.length > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                            state.settings.darkMode ? 'bg-green-600 text-white' : 'bg-green-100 text-green-800'
+                                          }`}>
+                                            {images.length} pilti
+                                          </span>
+                                        )}
+                                        {chapterDefinitions.length > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                            state.settings.darkMode ? 'bg-yellow-600 text-white' : 'bg-yellow-100 text-yellow-800'
+                                          }`}>
+                                            {chapterDefinitions.length} definitsiooni
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <ArrowRight className={`w-5 h-5 transition-transform group-hover:translate-x-1 ${
+                                    state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
+                                  }`} />
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
                     );
                   })}
+
+                  {/* Standalone chapters (not assigned to any book heading) */}
+                  {(() => {
+                    const standaloneChapters = currentSubject.chapters
+                      .filter(chapter => !chapter.bookHeadingId)
+                      .sort((a, b) => (a.order || 0) - (b.order || 0));
+                    
+                    if (standaloneChapters.length === 0) return null;
+                    
+                    return (
+                      <div className={`rounded-3xl ${
+                        state.settings.darkMode 
+                          ? 'bg-gray-800/80 border border-gray-700' 
+                          : 'bg-white/80 border border-white/20'
+                      } backdrop-blur-sm shadow-xl overflow-hidden`}>
+                        
+                        {/* Standalone Header */}
+                        <div className={`p-6 ${
+                          state.settings.darkMode ? 'bg-gray-700/50' : 'bg-gray-50/80'
+                        } border-b ${
+                          state.settings.darkMode ? 'border-gray-600' : 'border-gray-200'
+                        }`}>
+                          <div className="flex items-center space-x-4">
+                            <div className={`w-12 h-12 rounded-full flex items-center justify-center ${
+                              state.settings.darkMode ? 'bg-green-600' : 'bg-green-500'
+                            }`}>
+                              <BookOpen className="w-6 h-6 text-white" />
+                            </div>
+                            <div>
+                              <h3 className={`text-2xl font-bold ${
+                                state.settings.darkMode ? 'text-white' : 'text-gray-900'
+                              }`}>
+                                Eraldiseisvad peatükid
+                              </h3>
+                              <p className={`text-sm ${
+                                state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
+                              }`}>
+                                {standaloneChapters.length} peatükki
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                        {/* Standalone chapters */}
+                        <div className="p-6 space-y-4">
+                          {standaloneChapters.map((chapter, index) => {
+                            const isCompleted = progress?.completedChapters.includes(chapter.id);
+                            const mainHeadings = chapter.mainHeadings || [];
+                            const images = chapter.images || [];
+                            const chapterDefinitions = currentSubject.definitions?.filter(def => def.chapterId === chapter.id) || [];
+                            
+                            return (
+                              <button
+                                key={chapter.id}
+                                onClick={() => handleChapterSelect(chapter.id)}
+                                onMouseEnter={playHover}
+                                className={`group w-full p-4 rounded-xl transition-all duration-300 transform hover:scale-102 hover:-translate-y-1 ${
+                                  state.settings.darkMode 
+                                    ? 'bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600' 
+                                    : 'bg-gray-50/50 hover:bg-gray-100/50 border border-gray-200'
+                                } shadow-lg hover:shadow-xl text-left`}
+                              >
+                                <div className="flex items-center justify-between">
+                                  <div className="flex items-center space-x-4">
+                                    <div 
+                                      className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                        isCompleted 
+                                          ? 'bg-green-500 text-white' 
+                                          : state.settings.darkMode 
+                                            ? 'bg-gray-600 text-gray-300' 
+                                            : 'bg-gray-200 text-gray-600'
+                                      }`}
+                                    >
+                                      {isCompleted ? (
+                                        <CheckCircle className="w-5 h-5" />
+                                      ) : (
+                                        <span className="font-bold text-sm">{index + 1}</span>
+                                      )}
+                                    </div>
+                                    <div>
+                                      <h4 className={`text-lg font-semibold ${
+                                        state.settings.darkMode ? 'text-white' : 'text-gray-900'
+                                      }`}>
+                                        {chapter.title}
+                                      </h4>
+                                      <div className="flex flex-wrap gap-2 mt-1">
+                                        <p className={`text-xs ${
+                                          state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
+                                        }`}>
+                                          {isCompleted ? t('completed') : t('notStarted')}
+                                        </p>
+                                        {mainHeadings.length > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                            state.settings.darkMode ? 'bg-purple-600 text-white' : 'bg-purple-100 text-purple-800'
+                                          }`}>
+                                            {mainHeadings.length} peapealkirja
+                                          </span>
+                                        )}
+                                        {images.length > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                            state.settings.darkMode ? 'bg-green-600 text-white' : 'bg-green-100 text-green-800'
+                                          }`}>
+                                            {images.length} pilti
+                                          </span>
+                                        )}
+                                        {chapterDefinitions.length > 0 && (
+                                          <span className={`px-2 py-1 rounded-full text-xs ${
+                                            state.settings.darkMode ? 'bg-yellow-600 text-white' : 'bg-yellow-100 text-yellow-800'
+                                          }`}>
+                                            {chapterDefinitions.length} definitsiooni
+                                          </span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <ArrowRight className={`w-5 h-5 transition-transform group-hover:translate-x-1 ${
+                                    state.settings.darkMode ? 'text-gray-400' : 'text-gray-600'
+                                  }`} />
+                                </div>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               </>
             )}
