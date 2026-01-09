@@ -66,8 +66,8 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           <div className="w-20 h-20 bg-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Õppekeskkond</h1>
-          <p className="text-gray-300">9. klasside õppeplatvorm</p>
+          <h1 className="text-3xl font-bold text-white mb-2">Eesti Keele Õpe</h1>
+          <p className="text-gray-300">8. Klassi Õppeplatvorm</p>
         </div>
 
         {/* Login Form */}
