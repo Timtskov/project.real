@@ -22,8 +22,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
     setError('');
 
     await new Promise((r) => setTimeout(r, 300));
-
-    // KÕIGE KINDLAM VARIANT – EI OLE OBJEKTE, EI OLE CACHET
+    
     if (u === 'tim' && p === 'tim17') return onLogin('tim');
     if (u === 'user1' && p === 'pass123') return onLogin('user1');
     if (u === 'user2' && p === 'secure456') return onLogin('user2');
