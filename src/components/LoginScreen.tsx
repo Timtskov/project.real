@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { User, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
 
-interface LoginScreenProps {
-  onLogin: (username: string) => void;
-}
-
-export function LoginScreen({ onLogin }: LoginScreenProps) {
+export function LoginScreen() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -14,28 +10,58 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    const u = username.trim().toLowerCase();
-    const p = password.trim();
+    const u = username.trim();
+    const p = password;
 
     setIsLoading(true);
     setError('');
 
     await new Promise((r) => setTimeout(r, 300));
-    
-    if (u === 'tim' && p === 'tim17') return onLogin('tim');
-    if (u === 'user1' && p === 'pass123') return onLogin('user1');
-    if (u === 'user2' && p === 'secure456') return onLogin('user2');
-    if (u === 'user3' && p === 'mypass789') return onLogin('user3');
-    if (u === 'user4' && p === 'login2024') return onLogin('user4');
-    if (u === 'user5' && p === 'password1') return onLogin('user5');
-    if (u === 'user6' && p === 'access999') return onLogin('user6');
-    if (u === 'user7' && p === 'key2023') return onLogin('user7');
-    if (u === 'user8' && p === 'secret888') return onLogin('user8');
-    if (u === 'user9' && p === 'code777') return onLogin('user9');
-    if (u === 'user10' && p === 'auth666') return onLogin('user10');
 
-    setError('Vale kasutajanimi või parool');
+    if (u === 'user1' && p === 'pass123') {
+      alert('User1 login edukas');
+    } else if (u === 'user2' && p === 'secure456') {
+      alert('User2 login edukas');
+    } else if (u === 'user3' && p === 'mypass789') {
+      alert('User3 login edukas');
+    } else if (u === 'user4' && p === 'login2024') {
+      alert('User4 login edukas');
+    } else if (u === 'user5' && p === 'password1') {
+      alert('User5 login edukas');
+    } else if (u === 'user6' && p === 'access999') {
+      alert('User6 login edukas');
+    } else if (u === 'user7' && p === 'key2023') {
+      alert('User7 login edukas');
+    } else if (u === 'user8' && p === 'secret888') {
+      alert('User8 login edukas');
+    } else if (u === 'user9' && p === 'code777') {
+      alert('User9 login edukas');
+    } else if (u === 'user10' && p === 'auth666') {
+      alert('User10 login edukas');
+    } else if (u === 'user11' && p === 'entry555') {
+      alert('User11 login edukas');
+    } else if (u === 'user12' && p === 'token444') {
+      alert('User12 login edukas');
+    } else if (u === 'user13' && p === 'verify333') {
+      alert('User13 login edukas');
+    } else if (u === 'user14' && p === 'check222') {
+      alert('User14 login edukas');
+    } else if (u === 'user15' && p === 'valid111') {
+      alert('User15 login edukas');
+    } else if (u === 'user16' && p === 'open000') {
+      alert('User16 login edukas');
+    } else if (u === 'user17' && p === 'start999') {
+      alert('User17 login edukas');
+    } else if (u === 'user18' && p === 'begin888') {
+      alert('User18 login edukas');
+    } else if (u === 'user19' && p === 'enter777') {
+      alert('User19 login edukas');
+    } else if (u === 'user20' && p === 'login666') {
+      alert('User20 login edukas');
+    } else {
+      setError('Vale kasutajanimi või parool');
+    }
+
     setIsLoading(false);
   };
 
@@ -100,10 +126,6 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
               {isLoading ? '...' : 'Logi sisse'}
             </button>
           </form>
-
-          <div className="mt-6 p-4 bg-blue-600/20 border border-blue-500/30 rounded-xl text-blue-300 text-xs text-center">
-            Demo: user1 / pass123 · tim / tim17
-          </div>
         </div>
       </div>
     </div>
