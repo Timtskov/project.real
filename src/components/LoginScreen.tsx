@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { User, Lock, Eye, EyeOff, LogIn } from 'lucide-react';
-import { useAudio } from '../hooks/useAudio';
 
 interface LoginScreenProps {
   onLogin: (username: string) => void;
 }
 
-// Demo kasutajad (ainult demo eesmärgil)
+// DEMO kasutajad
 const VALID_USERS: Record<string, string> = {
   tim: 'tim17',
   user1: 'pass123',
@@ -31,6 +30,13 @@ const VALID_USERS: Record<string, string> = {
   user20: 'login666',
 };
 
+// eemaldab KÕIK tühikud ja normaliseerib stringi
+const normalize = (value: string) =>
+  value
+    .normalize('NFKC')
+    .replace(/[\s\u00A0]+/g, '')
+    .toLowerCase();
+
 export function LoginScreen({ onLogin }: LoginScreenProps) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -38,31 +44,20 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const { playHover, playError, playSuccess } = useAudio();
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const cleanUsername = username.trim().toLowerCase();
-    const cleanPassword = password.trim();
-
-    if (!cleanUsername || !cleanPassword) {
-      setError('Palun täida kõik väljad');
-      playError();
-      return;
-    }
+    const u = normalize(username);
+    const p = password.normalize('NFKC').replace(/[\s\u00A0]+/g, '');
 
     setIsLoading(true);
     setError('');
 
-    // Simuleerime serveri vastust
-    await new Promise((resolve) => setTimeout(resolve, 800));
+    await new Promise((r) => setTimeout(r, 500));
 
-    if (VALID_USERS[cleanUsername] === cleanPassword) {
-      playSuccess();
-      onLogin(cleanUsername);
+    if (VALID_USERS[u] === p) {
+      onLogin(u);
     } else {
-      playError();
       setError('Vale kasutajanimi või parool');
       setIsLoading(false);
     }
@@ -80,7 +75,7 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
           <p className="text-gray-300">8. Klassi Õppeplatvorm</p>
         </div>
 
-        {/* Login card */}
+        {/* Login Card */}
         <div className="bg-gray-800/80 backdrop-blur-sm border border-gray-700 rounded-3xl p-8 shadow-2xl">
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Username */}
@@ -117,7 +112,6 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
                 <button
                   type="button"
                   onClick={() => setShowPassword((v) => !v)}
-                  onMouseEnter={playHover}
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-300"
                 >
                   {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -136,11 +130,10 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             <button
               type="submit"
               disabled={isLoading}
-              onMouseEnter={playHover}
-              className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold transition-all duration-300 ${
+              className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                 isLoading
                   ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-500 text-white'
+                  : 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg hover:shadow-xl'
               }`}
             >
               {isLoading ? (
@@ -154,9 +147,9 @@ export function LoginScreen({ onLogin }: LoginScreenProps) {
             </button>
           </form>
 
-          {/* Demo info */}
+          {/* Demo */}
           <div className="mt-6 p-4 bg-blue-600/20 border border-blue-500/30 rounded-xl text-blue-300 text-xs text-center">
-            Demo: <b>user1</b> / <b>pass123</b> või <b>tim</b> / <b>tim17</b>
+            Demo: <b>user1</b> / <b>pass123</b> · <b>tim</b> / <b>tim17</b>
           </div>
         </div>
       </div>
